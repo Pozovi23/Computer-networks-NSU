@@ -30,11 +30,12 @@ def ping_server():
     else:
       results += [[site, 'Unreachable']]
 
-  write_csv(results)
+  return results
   
 
 def main():
-  ping_server()
+  results = ping_server()
+  write_csv(results)
 
 
 main()
