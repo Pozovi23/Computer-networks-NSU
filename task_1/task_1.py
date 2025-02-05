@@ -3,7 +3,7 @@ import csv
 
 
 def write_csv(results):
-    with open("sites.csv", "w", newline="") as csvfile:
+    with open("./sites.csv", "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(results)
 
@@ -28,7 +28,11 @@ def ping_server():
             subprocess.run(["ping", "-c", "1"] + [site], capture_output=True, text=True)
         )
 
-        if output.find("Destination Protocol Unreachable") == -1:
+        if (
+            output.find("Destination Protocol Unreachable") == -1
+            and output.find("100% packet loss") == -1
+            and output.find("time") != -1
+        ):
             index = output.find("time") + len("time=")
             result = ""
             symbol = output[index]
@@ -40,7 +44,7 @@ def ping_server():
             result += "s"
             results += [[site, result]]
         else:
-            results += [[site, "Unreachable"]]
+            results += [[site, "Unreachable or something went wrong"]]
 
     return results
 
