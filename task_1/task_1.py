@@ -8,7 +8,39 @@ def write_csv(results):
         writer.writerows(results)
 
 
-def ping_server():
+def parse_response(response):
+    index = response.find("time") + len("time=")
+    symbol = response[index]
+    result = ""
+
+    while symbol != "s":
+        result += symbol
+        index += 1
+        symbol = response[index]
+    result += "s"
+
+    return result
+
+
+def response_from_server(site):
+    output = str(
+        subprocess.run(["ping", "-c", "1"] + [site], capture_output=True, text=True)
+    )
+    result = ""
+
+    if (
+        output.find("Destination Protocol Unreachable") == -1
+        and output.find("100% packet loss") == -1
+        and output.find("time") != -1
+    ):
+        result = parse_response(output)
+    else:
+        result = "Unreachable or something went wrong"
+
+    return result
+
+
+def ping_servers():
     sites = [
         "youtube.com",
         "instagram.com",
@@ -24,33 +56,14 @@ def ping_server():
     results = []
 
     for site in sites:
-        output = str(
-            subprocess.run(["ping", "-c", "1"] + [site], capture_output=True, text=True)
-        )
-
-        if (
-            output.find("Destination Protocol Unreachable") == -1
-            and output.find("100% packet loss") == -1
-            and output.find("time") != -1
-        ):
-            index = output.find("time") + len("time=")
-            result = ""
-            symbol = output[index]
-
-            while symbol != "s":
-                result += symbol
-                index += 1
-                symbol = output[index]
-            result += "s"
-            results += [[site, result]]
-        else:
-            results += [[site, "Unreachable or something went wrong"]]
+        time = response_from_server(site)
+        results += [[site, time]]
 
     return results
 
 
 def main():
-    results = ping_server()
+    results = ping_servers()
     write_csv(results)
 
 
