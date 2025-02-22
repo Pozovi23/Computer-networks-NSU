@@ -33,8 +33,6 @@ def make_csv(columns, tools_and_its_features_list):
 
 
 def parse_one_tool(description, set_of_features):
-    set_of_features.add("description")
-    set_of_features.add("amount_of_reviews")
     try:
         tool_features = {}
         text = description.text.splitlines()
@@ -76,7 +74,10 @@ def parse_site(driver):
         exit(0)
 
     set_of_features = set()
+    set_of_features.add("description")
+    set_of_features.add("amount_of_reviews")
     tools_and_its_features_list = []
+
     for i in range(amount_of_pages):
         time.sleep(1)
         tools_descriptions = driver.find_elements(
