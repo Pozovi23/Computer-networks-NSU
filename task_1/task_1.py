@@ -21,7 +21,6 @@ def parse_response(response):
 
     return result
 
-
 def response_from_server(site):
     output = str(
         subprocess.run(["ping", "-c", "1"] + [site], capture_output=True, text=True)
