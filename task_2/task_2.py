@@ -84,9 +84,6 @@ def parse_site(driver):
             By.XPATH, "//*[contains(@class,'E-Geio')]"
         )
 
-        set_of_features.add("description")
-        set_of_features.add("amount_of_reviews")
-
         for description in tools_descriptions:
             current_tool_and_its_feature = parse_one_tool(description, set_of_features)
             tools_and_its_features_list.append(current_tool_and_its_feature)
