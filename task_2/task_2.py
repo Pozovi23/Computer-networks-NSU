@@ -1,6 +1,7 @@
 import time
 import re
 import pandas as pd
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -9,6 +10,8 @@ from selenium.webdriver.common.by import By
 def make_csv(columns, tools_and_its_features_list):
     dataframe = pd.DataFrame(columns=columns)
     for tool in tools_and_its_features_list:
+        if len(tool.keys()) == 0:
+            continue
         features = sorted(tool.keys())
         features.remove("name")
         features = ["name"] + features
