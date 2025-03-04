@@ -1,5 +1,5 @@
-import subprocess
 import csv
+import subprocess
 
 
 def write_csv(results):

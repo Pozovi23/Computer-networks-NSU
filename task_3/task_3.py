@@ -1,7 +1,7 @@
-import time
 import re
-import pandas as pd
+import time
 
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -81,7 +81,7 @@ def parse_site(driver):
     set_of_features.add("amount_of_reviews")
     tools_and_its_features_list = []
 
-    for i in range(amount_of_pages):
+    for page in range(amount_of_pages):
         time.sleep(1)
         tools_descriptions = driver.find_elements(
             By.XPATH, "//*[contains(@class,'E-Geio')]"
@@ -91,7 +91,7 @@ def parse_site(driver):
             current_tool_and_its_feature = parse_one_tool(description, set_of_features)
             tools_and_its_features_list.append(current_tool_and_its_feature)
 
-        if i != amount_of_pages - 1:
+        if page != amount_of_pages - 1:
             driver.find_element(
                 By.XPATH, "//*[@id='product-listing-top']/div[3]/div/div[2]/a"
             ).click()
