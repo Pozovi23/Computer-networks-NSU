@@ -1,0 +1,8 @@
+FROM nginx:1.27.4
+
+RUN apt-get update && \
+    apt-get install -y libgeoip-dev geoip-bin geoip-database && \
+    apt-get clean
+
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY server.html /usr/share/nginx/html/block/server.html
